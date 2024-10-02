@@ -1,5 +1,6 @@
 import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
+import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
@@ -51,7 +52,9 @@ export const signup = async (req, res) => {
         "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png",
     });
 
+    generateTokenAndSetCookie(newUser._id, res);
     await newUser.save();
+
     res.status(201).json(newUser);
   } catch (error) {
     console.log(error);
